@@ -1,0 +1,20 @@
+{
+    "Lua.diagnostics.globals": [
+        "lfs",
+        "Settings",
+        "AUCTION_HOUSE_FILTER_UNCOLLECTED_ONLY",
+        "AUCTION_HOUSE_FILTER_USABLE_ONLY",
+        "AUCTION_HOUSE_FILTER_CURRENTEXPANSION_ONLY",
+        "AUCTION_HOUSE_FILTER_UPGRADES_ONLY",
+        "AUCTION_HOUSE_FILTER_RUNECARVING",
+        "AUCTION_HOUSE_FILTER_CATEGORY_EQUIPMENT",
+        "AUCTION_HOUSE_FILTER_CATEGORY_RARITY",
+        "CreateSettingsListSectionHeaderInitializer",
+        "AuctionHouseSearchBarMixin",
+        "AuctionHouseFilterButtonMixin",
+        "AuctionHouseFrame",
+        "AUCTION_HOUSE_DEFAULT_FILTERS",
+        "LE_SCRIPT_BINDING_TYPE_INTRINSIC_POSTCALL",
+        "RunNextFrame"
+    ]
+}

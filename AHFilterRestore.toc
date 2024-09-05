@@ -1,0 +1,9 @@
+## Author: Potdisc
+## Title: AH Filter Restore
+## Notes: Restores the Auction House filter to it's previous state.
+## SavedVariables: AHFilterRestoreDB
+## Interface: 110002
+## Version: 0.1
+
+
+core.lua
