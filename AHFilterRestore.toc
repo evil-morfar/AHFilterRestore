@@ -3,8 +3,8 @@
 ## Notes: Permanent Auction House filter.
 ## SavedVariables: AHFilterRestoreDB
 ## IconTexture: interface/cursor/crosshair/buy.blp
-## Interface: 110002
-## Version: 0.1
+## Interface: 110002, 110005
+## Version: 1.0.0
 
 
 core.lua
