@@ -1,6 +1,6 @@
 ## Author: Potdisc
-## Title: AH Filter Restore
-## Notes: Restores the Auction House filter to it's previous state.
+## Title: Auction House - Filter Restore
+## Notes: Permanent Auction House filter.
 ## SavedVariables: AHFilterRestoreDB
 ## IconTexture: interface/cursor/crosshair/buy.blp
 ## Interface: 110002
