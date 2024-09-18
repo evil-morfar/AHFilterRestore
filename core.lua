@@ -18,7 +18,7 @@ end)
 function addon:SetupHooks()
     if self.hooked then return end
 
-    -- Store the filter whenver it's updated
+    -- Store the filter whenever it's updated
     hooksecurefunc(AuctionHouseFrame.SearchBar, "OnFilterToggled", function()
         self:Debug "OnFilterToggled:"
         local newFilter = AuctionHouseFrame.SearchBar.FilterButton:GetFilters()
