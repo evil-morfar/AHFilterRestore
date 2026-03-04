@@ -54,7 +54,7 @@ end
 function addon:SetCraftingOrdersFilter()
     -- No real way to hook this, so just inject our filter here.
     ProfessionsCustomerOrdersFrame.BrowseOrders.SearchBar.FilterDropdown.filters = next(
-            AHFilterRestoreDB) and AHFilterRestoreDB.craftingOrders or
+            AHFilterRestoreDB) and next(AHFilterRestoreDB.craftingOrders) and AHFilterRestoreDB.craftingOrders or
         CopyTable(AUCTION_HOUSE_DEFAULT_FILTERS);
     -- This will update the filter button to show reset if needed.
     ProfessionsCustomerOrdersFrame.BrowseOrders.SearchBar.FilterDropdown:OnMenuResponse()
@@ -69,17 +69,18 @@ function addon:HookAHFunctions()
         AHFilterRestoreDB.ah = newFilter
     end)
 
-    -- Entering the "Auction" tab will cause a reset to fire, so we set our filter after that
+    -- Loading FilterButton calls Reset, e.g. entering the "Auction" tab, so we set our filter after that
     hooksecurefunc(AuctionHouseFrame.SearchBar.FilterButton, "Reset", function()
         self:Debug("FilterButton:Reset")
         addon:UpdateAHFilters()
     end)
 
     -- Since we set our filter after the normal reset, we must re-implement reset functionality
-    AuctionHouseFrame.SearchBar.FilterButton.ClearFiltersButton:SetScript("OnClick",
+    AuctionHouseFrame.SearchBar.FilterButton.ClearFiltersButton:HookScript("OnClick",
         function()
             self:Debug("OnAHReset")
             addon:AHFilterButtonResetOnClick(AuctionHouseFrame.SearchBar.FilterButton)
+            AHFilterRestoreDB.ah = CopyTable(AUCTION_HOUSE_DEFAULT_FILTERS)
         end)
     self.auctionHouseHooked = true
 end
@@ -87,7 +88,7 @@ end
 function addon:UpdateAHFilters()
     self:Debug("Updating AH filters")
     -- Replace with our filter if it exists, otherwise use the default.
-    AuctionHouseFrame.SearchBar.FilterButton.filters = next(AHFilterRestoreDB) and AHFilterRestoreDB.ah or
+    AuctionHouseFrame.SearchBar.FilterButton.filters = next(AHFilterRestoreDB) and next(AHFilterRestoreDB.ah) and AHFilterRestoreDB.ah or
         CopyTable(AUCTION_HOUSE_DEFAULT_FILTERS);
     AuctionHouseFrame.SearchBar:UpdateClearFiltersButton()
 end
@@ -99,7 +100,6 @@ function addon:AHFilterButtonResetOnClick(self)
     self.minLevel = 0;
     self.maxLevel = 0;
     self.ClearFiltersButton:Hide();
-    wipe(AHFilterRestoreDB.ah)
 end
 
 function addon:Debug(...)
