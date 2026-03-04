@@ -1,17 +1,17 @@
 local addonName, addon = ...
 
-addon.debug = true
+addon.debug = false
 
 local frame = CreateFrame("Frame")
 frame:RegisterEvent("AUCTION_HOUSE_SHOW")
 frame:RegisterEvent("CRAFTINGORDERS_SHOW_CUSTOMER")
 frame:RegisterEvent("ADDON_LOADED")
 
-
 frame:SetScript("OnEvent", function(_, event, name, ...)
     addon:Debug("OnEvent", event, ...)
     if event == "AUCTION_HOUSE_SHOW" then
         addon:HookAHFunctions()
+
         -- Should be a safe time to hook the crafting order frame
     elseif event == "CRAFTINGORDERS_SHOW_CUSTOMER" then
         addon:HookCraftingOrderFunctions()
@@ -35,13 +35,15 @@ frame:SetScript("OnEvent", function(_, event, name, ...)
         end
     end
 end)
+
 function addon:HookCraftingOrderFunctions()
     if self.craftingOrderHooked then return end
-    -- OnMenuResponse is called when there's changes
+    -- OnMenuResponse is called when filters are updated.
     hooksecurefunc(ProfessionsCustomerOrdersFrame.BrowseOrders.SearchBar.FilterDropdown, "OnMenuResponse", function(...)
         self:Debug("FilterDropdown:OnMenuResponse", ...)
         AHFilterRestoreDB.craftingOrders = ProfessionsCustomerOrdersFrame.BrowseOrders.SearchBar.FilterDropdown.filters
     end)
+    -- Unlike AH we can do a simple hook for the reset button.
     ProfessionsCustomerOrdersFrame.BrowseOrders.SearchBar.FilterDropdown.ResetButton:HookScript("OnClick",
         function(...)
             self:Debug("FilterDropdown:ResetButton:OnClick", ...)
@@ -52,7 +54,6 @@ function addon:HookCraftingOrderFunctions()
 end
 
 function addon:SetCraftingOrdersFilter()
-    -- No real way to hook this, so just inject our filter here.
     ProfessionsCustomerOrdersFrame.BrowseOrders.SearchBar.FilterDropdown.filters = next(
             AHFilterRestoreDB) and next(AHFilterRestoreDB.craftingOrders) and AHFilterRestoreDB.craftingOrders or
         CopyTable(AUCTION_HOUSE_DEFAULT_FILTERS);
@@ -72,7 +73,7 @@ function addon:HookAHFunctions()
     -- Loading FilterButton calls Reset, e.g. entering the "Auction" tab, so we set our filter after that
     hooksecurefunc(AuctionHouseFrame.SearchBar.FilterButton, "Reset", function()
         self:Debug("FilterButton:Reset")
-        addon:UpdateAHFilters()
+        addon:SetAHFilters()
     end)
 
     -- Since we set our filter after the normal reset, we must re-implement reset functionality
@@ -85,10 +86,11 @@ function addon:HookAHFunctions()
     self.auctionHouseHooked = true
 end
 
-function addon:UpdateAHFilters()
+function addon:SetAHFilters()
     self:Debug("Updating AH filters")
     -- Replace with our filter if it exists, otherwise use the default.
-    AuctionHouseFrame.SearchBar.FilterButton.filters = next(AHFilterRestoreDB) and next(AHFilterRestoreDB.ah) and AHFilterRestoreDB.ah or
+    AuctionHouseFrame.SearchBar.FilterButton.filters = next(AHFilterRestoreDB) and next(AHFilterRestoreDB.ah) and
+        AHFilterRestoreDB.ah or
         CopyTable(AUCTION_HOUSE_DEFAULT_FILTERS);
     AuctionHouseFrame.SearchBar:UpdateClearFiltersButton()
 end
