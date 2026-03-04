@@ -6,4 +6,4 @@ Tired of the auction house filter resetting every time you close the auction hou
 
 ### v1.4 update
 
-Now does the same for the crafting orders screen - slightly changed the name to reflact it - better than creating two addons.
+Now does the same for the crafting orders screen - slightly changed the name to reflect it - better than creating two addons.
