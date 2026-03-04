@@ -17,10 +17,22 @@ frame:SetScript("OnEvent", function(_, event, name, ...)
         addon:HookCraftingOrderFunctions()
         addon:SetCraftingOrdersFilter()
     elseif event == "ADDON_LOADED" and name == addonName then
-        AHFilterRestoreDB = AHFilterRestoreDB or {
-            ah = {},
-            craftingOrders = {},
-        }
+        if AHFilterRestoreDB and not AHFilterRestoreDB.ah then
+            AHFilterRestoreDB.ah = CopyTable(AUCTION_HOUSE_DEFAULT_FILTERS)
+            AHFilterRestoreDB.craftingOrders = CopyTable(AUCTION_HOUSE_DEFAULT_FILTERS)
+            -- Old version of the DB - migrate
+            for k, v in pairs(AHFilterRestoreDB) do
+                if k ~= "ah" and k ~= "craftingOrders" then
+                    AHFilterRestoreDB.ah[k] = v
+                    AHFilterRestoreDB[k] = nil
+                end
+            end
+        else
+            AHFilterRestoreDB = AHFilterRestoreDB or {
+                ah = CopyTable(AUCTION_HOUSE_DEFAULT_FILTERS),
+                craftingOrders = CopyTable(AUCTION_HOUSE_DEFAULT_FILTERS)
+            }
+        end
     end
 end)
 function addon:HookCraftingOrderFunctions()
