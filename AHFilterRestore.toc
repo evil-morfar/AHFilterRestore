@@ -1,5 +1,5 @@
 ## Author: Potdisc
-## Title: Auction House - Filter Restore
+## Title: Filter Restore
 ## Notes: Permanent Auction House filter.
 ## SavedVariables: AHFilterRestoreDB
 ## IconTexture: interface/cursor/crosshair/buy.blp
