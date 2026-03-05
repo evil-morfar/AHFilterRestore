@@ -54,7 +54,7 @@ function addon:HookCraftingOrderFunctions()
 end
 
 function addon:SetCraftingOrdersFilter()
-    ProfessionsCustomerOrdersFrame.BrowseOrders.SearchBar.FilterDropdown.filters = next(
+    ProfessionsCustomerOrdersFrame.BrowseOrders.SearchBar.FilterDropdown.filters = AHFilterRestoreDB and next(
             AHFilterRestoreDB) and next(AHFilterRestoreDB.craftingOrders) and AHFilterRestoreDB.craftingOrders or
         CopyTable(AUCTION_HOUSE_DEFAULT_FILTERS);
     -- This will update the filter button to show reset if needed.
@@ -89,9 +89,9 @@ end
 function addon:SetAHFilters()
     self:Debug("Updating AH filters")
     -- Replace with our filter if it exists, otherwise use the default.
-    AuctionHouseFrame.SearchBar.FilterButton.filters = next(AHFilterRestoreDB) and next(AHFilterRestoreDB.ah) and
-        AHFilterRestoreDB.ah or
-        CopyTable(AUCTION_HOUSE_DEFAULT_FILTERS);
+    AuctionHouseFrame.SearchBar.FilterButton.filters = AHFilterRestoreDB and next(AHFilterRestoreDB) and
+        next(AHFilterRestoreDB.ah) and
+        AHFilterRestoreDB.ah or CopyTable(AUCTION_HOUSE_DEFAULT_FILTERS);
     AuctionHouseFrame.SearchBar:UpdateClearFiltersButton()
 end
 
